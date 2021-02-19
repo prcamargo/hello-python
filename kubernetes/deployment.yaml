@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-loadbalancer
+  namespace: default
+  labels:
+    app: ingress-nginx
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app: ingress-nginx
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-python-ingress
+  namespace: default
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hello-python
+        backend:
+          serviceName: hello-python-service
+          servicePort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-python-service
+  namespace: default
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: hello-python
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-python
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-python
+  template:
+    metadata:
+      labels:
+        app: hello-python
+    spec:
+      containers:
+      - name: hello-python
+        image: hello-python:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
