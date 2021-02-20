@@ -1,8 +1,15 @@
-# hello-python
-Very simple hello world python Flask application.
+# Introduction
 
-## References
+This is a simple application illustration configuration from load-balancer to nginx-ingress to service.
 
-https://kubernetes.io/blog/2019/07/23/get-started-with-kubernetes-using-python/
+## Building
 
-https://stackoverflow.com/questions/59844622/ingress-configuration-for-k8s-in-different-namespaces
+```
+docker build -f docker/Dockerfile -t hello-python:latest .
+```
+
+## Deploying
+
+```
+kubectl apply -f kubernetes
+```
