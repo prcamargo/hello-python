@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-nginx-loadbalancer
+  name: ingress-nginx
   namespace: default
   labels:
     app: ingress-nginx
@@ -14,8 +14,6 @@ spec:
   - name: https
     port: 443
     targetPort: https
-  selector:
-    app: ingress-nginx
 
 ---
 
@@ -26,6 +24,7 @@ metadata:
   namespace: default
   annotations:
     kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
