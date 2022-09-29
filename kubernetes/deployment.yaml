@@ -21,7 +21,7 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-python-ingress
@@ -34,9 +34,12 @@ spec:
   - http:
       paths:
       - path: /hello-python
+        pathType: Prefix
         backend:
-          serviceName: hello-python-service
-          servicePort: 5000
+          service:
+            name: hello-python-service
+            port: 
+              number: 5000
 ---
 apiVersion: v1
 kind: Service
